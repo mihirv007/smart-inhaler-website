@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Asthma Risk Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84..." crossorigin="anonymous" />
+</head>
+<body>
+    <div class="wrapper">
+      <h1>ASTHMA RISK ANALYSIS</h1>
+      <form id="asthma_form" action="{{ url_for('predict') }}" method="POST">
+          {{ form.hidden_tag() }}
+          <div class="container">
+              <button class="refresh_button" type="button" onclick="resetForm()">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+              </button>
+              <div class="form_details">
+                  <!-- Input Fields for each feature -->
+                  <div class="input_box">
+                      {{ form.Age.label(class_='form_label', for_='Age') }}
+                      {{ form.Age(class_='input', id='Age') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Gender.label(class_='form_label', for_='Gender') }}
+                      {{ form.Gender(class_='input', id='Gender') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Ethnicity.label(class_='form_label', for_='Ethnicity') }}
+                      {{ form.Ethnicity(class_='input', id='Ethnicity') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.EducationLevel.label(class_='form_label', for_='EducationLevel') }}
+                      {{ form.EducationLevel(class_='input', id='EducationLevel') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.BMI.label(class_='form_label', for_='BMI') }}
+                      {{ form.BMI(class_='input', id='BMI') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Smoking.label(class_='form_label', for_='Smoking') }}
+                      {{ form.Smoking(class_='input', id='Smoking') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.PhysicalActivity.label(class_='form_label', for_='PhysicalActivity') }}
+                      {{ form.PhysicalActivity(class_='input', id='PhysicalActivity') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.DietQuality.label(class_='form_label', for_='DietQuality') }}
+                      {{ form.DietQuality(class_='input', id='DietQuality') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.SleepQuality.label(class_='form_label', for_='SleepQuality') }}
+                      {{ form.SleepQuality(class_='input', id='SleepQuality') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.PollutionExposure.label(class_='form_label', for_='PollutionExposure') }}
+                      {{ form.PollutionExposure(class_='input', id='PollutionExposure') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.PollenExposure.label(class_='form_label', for_='PollenExposure') }}
+                      {{ form.PollenExposure(class_='input', id='PollenExposure') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.DustExposure.label(class_='form_label', for_='DustExposure') }}
+                      {{ form.DustExposure(class_='input', id='DustExposure') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.PetAllergy.label(class_='form_label', for_='PetAllergy') }}
+                      {{ form.PetAllergy(class_='input', id='PetAllergy') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.FamilyHistoryAsthma.label(class_='form_label', for_='FamilyHistoryAsthma') }}
+                      {{ form.FamilyHistoryAsthma(class_='input', id='FamilyHistoryAsthma') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.HistoryOfAllergies.label(class_='form_label', for_='HistoryOfAllergies') }}
+                      {{ form.HistoryOfAllergies(class_='input', id='HistoryOfAllergies') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Eczema.label(class_='form_label', for_='Eczema') }}
+                      {{ form.Eczema(class_='input', id='Eczema') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.HayFever.label(class_='form_label', for_='HayFever') }}
+                      {{ form.HayFever(class_='input', id='HayFever') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.GastroesophagealReflux.label(class_='form_label', for_='GastroesophagealReflux') }}
+                      {{ form.GastroesophagealReflux(class_='input', id='GastroesophagealReflux') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.LungFunctionFEV1.label(class_='form_label', for_='LungFunctionFEV1') }}
+                      {{ form.LungFunctionFEV1(class_='input', id='LungFunctionFEV1') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.LungFunctionFVC.label(class_='form_label', for_='LungFunctionFVC') }}
+                      {{ form.LungFunctionFVC(class_='input', id='LungFunctionFVC') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Wheezing.label(class_='form_label', for_='Wheezing') }}
+                      {{ form.Wheezing(class_='input', id='Wheezing') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.ShortnessOfBreath.label(class_='form_label', for_='ShortnessOfBreath') }}
+                      {{ form.ShortnessOfBreath(class_='input', id='ShortnessOfBreath') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.ChestTightness.label(class_='form_label', for_='ChestTightness') }}
+                      {{ form.ChestTightness(class_='input', id='ChestTightness') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.Coughing.label(class_='form_label', for_='Coughing') }}
+                      {{ form.Coughing(class_='input', id='Coughing') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.NighttimeSymptoms.label(class_='form_label', for_='NighttimeSymptoms') }}
+                      {{ form.NighttimeSymptoms(class_='input', id='NighttimeSymptoms') }}
+                  </div>
+                  <div class="input_box">
+                      {{ form.ExerciseInduced.label(class_='form_label', for_='ExerciseInduced') }}
+                      {{ form.ExerciseInduced(class_='input', id='ExerciseInduced') }}
+                  </div>
+              </div>
+              <button class="submit_btn" type="submit">Predict</button>
+          </div>
+      </form>
+    </div>
+
+    {% if prediction is not none %}
+    <div id="model_result" class="model_outer">
+        <div class="model_inner">
+            <h2>Prediction: {{ prediction }}</h2>
+            <span class="close_btn" onclick="closeResult()">&times;</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        function resetForm() {
+          document.getElementById("asthma_form").reset();
+          window.location.href = "{{ url_for('predict') }}";
+      }
+      
+        function closeResult() {
+            document.getElementById("model_result").style.display = "none";
+        }
+    </script>
+</body>
+</html>
